@@ -30,6 +30,6 @@ factors2 = st.selectbox('Options:',histogram_list, key = 'count')
 figure2 = px.histogram(vehicles_df, x=factors2, y='price')
 figure2.update_layout(title = '<b>Price based on {}</b>'.format(factors2))
 
-show_scatter = st.checkbox("Show scatter plot")
+show_scatter = st.checkbox("Show scatter plot", key="show-scatter")
 if show_scatter:
     st.plotly_chart(figure2)
