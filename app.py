@@ -2,8 +2,6 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 
-st.title = {"Software Development Project"}
-st.title
 
 vehicles_df = pd.read_csv('vehicles_us.csv')
 vehicles_df.info()
@@ -13,8 +11,8 @@ vehicles_df['is_4wd'] = vehicles_df['is_4wd'].fillna(0).astype(int)
 vehicles_df['odometer'] = vehicles_df['odometer'].fillna(0).astype(int)
 vehicles_df['paint_color'] = vehicles_df['paint_color'].fillna('Unknown')
 
-st.header=("Exploratory Data Analysis of Car Advertisements") 
-st.header
+st.header("Exploratory Data Analysis of Car Advertisements") 
+
 
 scatter_list = ['model' , 'days_listed' , 'odometer']
 factors = st.selectbox('Options:',scatter_list)
@@ -30,6 +28,6 @@ factors2 = st.selectbox('Options:',histogram_list, key = 'count')
 figure2 = px.histogram(vehicles_df, x=factors2, y='price')
 figure2.update_layout(title = '<b>Price based on {}</b>'.format(factors2))
 
-show_scatter = st.checkbox("Show scatter plot", key="show-scatter")
-if show_scatter:
+show_histogram = st.checkbox("Show histogram", key="show-histogram")
+if show_histogram:
     st.plotly_chart(figure2)
