@@ -7,18 +7,29 @@ import numpy as np
 vehicles_df = pd.read_csv('vehicles_us.csv')
 vehicles_df.info()
 
-vehicles_df['cylinders']= vehicles_df['cylinders'].fillna(vehicles_df['cylinders'].mean())
-vehicles_df['odometer'] = vehicles_df['odometer'].fillna(vehicles_df['odometer'].mean())
+vehicles_df['cylinders'] = vehicles_df['cylinders'].fillna(vehicles_df.groupby(['model'])['cylinders'].transform('median'))
 # The mean is used to replace missing values because just because there is a NaN value, does not mean there are 0 cyclinders or No Distance in the odometer columns. Mean is used to represent a number that is possibly close to what the car may have. 
+vehicles_df['odometer'] = vehicles_df['odometer'].fillna(vehicles_df.groupby(['model','model_year'])['odometer'].transform('mean'))
+vehicles_df['odometer'] = vehicles_df['odometer'].fillna(vehicles_df.groupby(['model_year'])['odometer'].transform('mean'))
+vehicles_df['odometer']= vehicles_df['odometer'].fillna(vehicles_df['odometer'].mean())
 vehicles_df['is_4wd'] = vehicles_df['is_4wd'].fillna(0).astype(int)
 # 0 represents 'No' and 1 represents 'Yes'
 vehicles_df['paint_color'].fillna('Unknown', inplace=True)
-vehicles_df['model_year'].fillna('Unknown', inplace=True)
+vehicles_df['model_year'] = vehicles_df['model_year'].fillna(vehicles_df.groupby(['model'])['model_year'].transform('median'))
+# Median is filled in for model_year for each group
 # All cars have a paint color and model year, but for this datatset, there is no way to know. 
 
-
+vehicles_df['date_posted'] = pd.to_datetime(vehicles_df['date_posted'])
+                                                         
 vehicles_df['cylinders'] = vehicles_df['cylinders'].astype(np.int64)
+                                                         
 vehicles_df['odometer'] = vehicles_df['odometer'].astype(np.int64)
+
+vehicles_df['model_year'] = vehicles_df['model_year'].astype(np.int64)
+                                                         
+vehicles_df['is_4wd'] = vehicles_df['is_4wd'].astype(bool)
+
+
 vehicles_df.info()
 
 
